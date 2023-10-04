@@ -1,10 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { StyleSheet, Text, TextInput, View, Button, FlatList } from 'react-native';
-//import * as SQLite from 'expo-sqlite';
 import { initializeApp } from 'firebase/app';
 import { getDatabase, push, ref, remove, onValue } from 'firebase/database';
-
-// This solution gives a "ReferenceError: Property 'e' doesn't exist, js engine: hermes"
 
 export default function App() {
 
@@ -37,16 +34,9 @@ export default function App() {
   }
 
   // Delete item
-  /* const deleteItem = (id) => {
-    console.log(id)
-    const itemRef = ref(database, 'items/' + id);
-    console.log(itemRef)
-    itemRef.remove()
-  } */
 
-  // With this version pressing delete doesn't do anything
   const deleteItem = (id) => {
-    console.log(id)
+    console.log(id) // id is undefined :(
     remove(
       ref(database, 'items/' + id)
       )
@@ -86,7 +76,9 @@ export default function App() {
       <Text style={{ marginTop: 30, fontSize: 20 }}>Shopping list</Text>
       <FlatList
         style={{ marginLeft: "5%" }}
-        keyExtractor={(item, index) => index.toString()}
+        // How to get item id?
+        keyExtractor={item => item.id.toString()} 
+        //keyExtractor={(item, index) => index.toString()}
         //keyExtractor={item => item.id}
         renderItem={({ item }) => <View style={styles.listcontainer}><Text style={{ fontSize: 18 }}>{item.amount}, {item.product}</Text>
           <Text style={{ fontSize: 18, color: '#0000ff' }} onPress={(e) => deleteItem(item.id)}> delete</Text></View>}
